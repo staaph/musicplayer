@@ -7,7 +7,7 @@
     <div class="p-6 mx-auto">
       <!-- Upload Dropbox -->
       <div
-        class="px-10 py-20 rounded-lg text-center cursor-pointer border border-dashed border-gray-400 text-gray-400 transition duration-500 hover:text-white hover:bg-green-400 hover:border-green-400 hover:border-solid"
+        class="px-10 py-20 rounded-lg text-center cursor-pointer border border-dashed border-gray-400 text-gray-400 transition duration-500 hover:text-white hover:bg-green-900 hover:border-green-100 hover:border-solid"
       >
         <h5>Drop your files here</h5>
       </div>
