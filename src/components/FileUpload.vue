@@ -1,9 +1,12 @@
 <template>
   <div class="bg-gray-900 flex flex-col w-full min-h-screen max-h-screen">
-    <div class="px-6 pt-6 pb-5 font-bold">
-      <span class="card-title text-white">Upload</span>
-      <hr class="my-6" />
+    <div
+      class="px-6 pt-5 pb-3 font-bold flex flex-row justify-between items-center"
+    >
+      <span class="card-title text-white text-xl">Upload</span>
+      <button @click="handleClick">Logout</button>
     </div>
+    <hr class="my-3" />
     <div class="p-6 mx-auto">
       <!-- Upload Dropbox -->
       <div
@@ -35,4 +38,25 @@
   </div>
 </template>
 
-<script></script>
+<script setup>
+import useLogout from '../composables/useLogout';
+
+const { logout } = useLogout();
+
+const handleClick = async () => {
+  await logout();
+};
+</script>
+
+<style>
+button {
+  @apply bg-slate-500
+        rounded-3xl
+        text-xs
+        font-bold
+        px-6
+        py-3
+        border-0
+        active:scale-90;
+}
+</style>

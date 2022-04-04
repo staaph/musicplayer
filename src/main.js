@@ -9,13 +9,13 @@ import './assets/index.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
 
 /* import specific icons */
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faCircle } from '@fortawesome/free-solid-svg-icons';
 
 /* import font awesome icon component */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 /* add icons to the library */
-library.add(faSpinner);
+library.add(faPlay, faCircle);
 
 /* add font awesome icon component */
 
