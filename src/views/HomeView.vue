@@ -1,7 +1,7 @@
 <template>
-  <MusicBar />
+  <MusicPlayer />
 </template>
 
 <script setup>
-import MusicBar from '@/components/MusicBar.vue';
+import MusicPlayer from '@/components/MusicPlayer.vue';
 </script>
