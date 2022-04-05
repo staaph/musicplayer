@@ -6,10 +6,7 @@
       class="w-8/12 mx-auto py-8 px-8 rounded-2xl shadow-gray-900 bg-slate-400 shadow"
     >
       <h2 class="font-bold">Login</h2>
-      <form
-        @submit.prevent="handleSubmit"
-        class="mx-auto w-fit max-w-xs m mt-4"
-      >
+      <form class="mx-auto w-fit max-w-xs m mt-4" @submit.prevent="signUp">
         <input type="email" required placeholder="email" v-model="email" />
         <input
           type="password"
@@ -17,7 +14,6 @@
           placeholder="password"
           v-model="password"
         />
-        <div class="text-red-600 text-sm">{{ error }}</div>
         <button class="my-5 mx-auto">Log in</button>
       </form>
     </div>
@@ -26,16 +22,19 @@
 
 <script setup>
 import { ref } from 'vue';
-import useLogin from '../composables/useLogin';
+import { useRouter } from 'vue-router';
+import useAuth from '../composables/useAuth.js';
+const { login } = useAuth();
 
 const email = ref('');
 const password = ref('');
-const { error, login } = useLogin();
-const handleSubmit = async () => {
+
+const router = useRouter();
+
+const signUp = async () => {
   await login(email.value, password.value);
-  // if (!error.value) {
-  //   context.emit('login');
-  // }
+  console.log('success');
+  router.push('/upload');
 };
 </script>
 

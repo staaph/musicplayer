@@ -38,15 +38,7 @@
   </div>
 </template>
 
-<script setup>
-import useLogout from '../composables/useLogout';
-
-const { logout } = useLogout();
-
-const handleClick = async () => {
-  await logout();
-};
-</script>
+<script setup></script>
 
 <style>
 button {
