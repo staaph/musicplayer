@@ -38,7 +38,19 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import useAuth from '../composables/useAuth.js';
+import { useRouter } from 'vue-router';
+
+const { logout } = useAuth();
+const router = useRouter();
+
+//logout user and redirect to /logout
+const handleClick = async () => {
+  await logout();
+  router.push('/login');
+};
+</script>
 
 <style>
 button {
