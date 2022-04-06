@@ -7,6 +7,7 @@ import './assets/index.css';
 
 /* import the fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core';
+import { auth } from './firebase/config.js';
 
 /* import specific icons */
 import {
@@ -25,10 +26,15 @@ library.add(faPlay, faCircle, faMusic, faTimes, faPencilAlt);
 
 /* add font awesome icon component */
 
-const app = createApp(App);
-app.component('font-awesome-icon', FontAwesomeIcon);
+let app;
 
-app.use(createPinia());
-app.use(router);
+auth.onAuthStateChanged(() => {
+  if (!app) {
+    app = createApp(App);
+    app.component('font-awesome-icon', FontAwesomeIcon);
+    app.use(createPinia());
+    app.use(router);
 
-app.mount('#app');
+    app.mount('#app');
+  }
+});
