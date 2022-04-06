@@ -68,11 +68,11 @@
               />
             </div>
             <div class="">
-              <label class="mb-2 text-white">Genre</label>
+              <label class="mb-2 text-white">Artist</label>
               <input
                 type="text"
                 class="w-full py-1.5 px-3 text-gray-800 border border-gray-300 outline-none rounded-md"
-                placeholder="Enter Genre"
+                placeholder="Enter Artist"
               />
             </div>
             <div class="flex gap-6 justify-center m-5">
