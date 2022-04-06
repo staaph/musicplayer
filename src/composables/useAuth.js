@@ -2,17 +2,17 @@ import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth } from '../firebase/config.js';
 import { ref } from 'vue';
 
-const errorMsg = ref(null);
+const errorMsg = ref();
 const isAuthenticated = ref(false);
 
 const useAuth = () => {
-  errorMsg.value = ref(null);
+  errorMsg.value = ref();
   //login
   const login = async (email, password) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       isAuthenticated.value = true;
-      errorMsg.value = null;
+      errorMsg.value = '';
     } catch (error) {
       switch (error.code) {
         case 'auth/invalid-email':

@@ -14,8 +14,10 @@
           placeholder="password"
           v-model="password"
         />
-        <div v-if="errorMsg != null" class="text-red-900">{{ errorMsg }}</div>
-        <button class="my-5 mx-auto">Log in</button>
+        <div v-if="errorMsg" class="text-red-900">{{ errorMsg }}</div>
+        <button class="my-5 mx-auto transition ease-in-out delay-50">
+          Log in
+        </button>
       </form>
     </div>
   </div>
