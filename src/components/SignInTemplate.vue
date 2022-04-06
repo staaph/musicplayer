@@ -14,6 +14,7 @@
           placeholder="password"
           v-model="password"
         />
+        <div v-if="errorMsg != null" class="text-red-900">{{ errorMsg }}</div>
         <button class="my-5 mx-auto">Log in</button>
       </form>
     </div>
@@ -27,7 +28,8 @@ import useAuth from '../composables/useAuth.js';
 
 const email = ref('');
 const password = ref('');
-const { login, isAuthenticated } = useAuth();
+
+const { login, isAuthenticated, errorMsg } = useAuth();
 const router = useRouter();
 
 //signIn admin > if authenticated > redirect to /upload
