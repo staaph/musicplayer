@@ -1,5 +1,6 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
+import { auth } from './firebase/config.js';
 
 import App from './App.vue';
 import router from './router';
@@ -7,7 +8,6 @@ import './assets/index.css';
 
 /* import the fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { auth } from './firebase/config.js';
 
 /* import specific icons */
 import {
