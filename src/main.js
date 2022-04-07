@@ -24,7 +24,6 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 /* add icons to the library */
 library.add(faPlay, faCircle, faMusic, faTimes, faPencilAlt);
 
-/* add font awesome icon component */
 
 let app;
 
