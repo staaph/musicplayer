@@ -12,7 +12,7 @@ const useAuth = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       isAuthenticated.value = true;
-      errorMsg.value = '';
+      errorMsg.value = ref();
     } catch (error) {
       switch (error.code) {
         case 'auth/invalid-email':
