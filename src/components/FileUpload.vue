@@ -40,13 +40,15 @@
         <!-- Progess Bar -->
         <div class="mb-4 pt-4" v-for="upload in uploads" :key="upload.name">
           <!-- File Name -->
-          <div class="font-bold text-sm text-white">{{ upload.name }}</div>
+          <div class="font-bold text-sm text-white" :class="upload.text_class">
+            {{ upload.name }}
+          </div>
 
           <div class="flex h-4 overflow-hidden bg-gray-200 rounded">
             <!-- Inner Progress Bar -->
             <div
               class="p-0.5 leading-none font-medium transition-all bg-blue-500 text-center text-xs text-white"
-              :class="'bg-blue-500'"
+              :class="upload.variant"
               :style="{ width: upload.current_progress + '%' }"
             >
               {{ Math.round(upload.current_progress) + '%' }}
@@ -100,7 +102,10 @@
               >
                 Go Back
               </button>
-              <button class="py-1.5 px-3 rounded text-white bg-green-600">
+              <button
+                class="py-1.5 px-3 rounded text-white bg-green-600"
+                @click.prevent=""
+              >
                 Submit
               </button>
             </div>
@@ -116,8 +121,12 @@
 import useAuth from '../composables/useAuth.js';
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
-import { storage } from '../firebase/config';
-import { ref as fbref, uploadBytesResumable } from 'firebase/storage';
+import { storage, songsCollection, addDoc, getDoc } from '../firebase/config';
+import {
+  ref as fbref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from 'firebase/storage';
 
 //definitions
 const { logout } = useAuth();
@@ -143,12 +152,35 @@ const upload = ($event) => {
         task,
         current_progress: 0,
         name: file.name,
+        variants: 'bg-blue-500',
+        text_class: '',
       }) - 1;
 
-    task.on('state_changed', (snapshot) => {
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      uploads.value[uploadIndex].current_progress = progress;
-    });
+    task.on(
+      'state_changed',
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        uploads.value[uploadIndex].current_progress = progress;
+      },
+      (error) => {
+        uploads.value[uploadIndex].variant = 'bg-red-400';
+        uploads.value[uploadIndex].text_class = 'text-red-400';
+        console.log(error);
+      },
+      async () => {
+        const song = {
+          original_name: task.snapshot.ref.name,
+          modified_name: task.snapshot.ref.name,
+          artist: '',
+        };
+        song.url = await getDownloadURL(task.snapshot.ref);
+        await addDoc(songsCollection, song);
+
+        uploads.value[uploadIndex].variant = 'bg-green-400';
+        uploads.value[uploadIndex].text_class = 'text-green-400';
+      }
+    );
   });
 };
 
