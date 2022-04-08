@@ -20,7 +20,7 @@
       type="file"
       multiple
       @change="upload($event)"
-      class="pt-5 text-white file:rounded-md file:border-0 file:p-1"
+      class="pt-5 text-white file:rounded-md file:border-0 file:p-1 active:scale-95"
     />
 
     <!-- Progess Bar -->
@@ -54,7 +54,6 @@ import {
 } from 'firebase/storage';
 
 //definitions
-
 const is_dragover = ref(false);
 const uploads = ref([]);
 
