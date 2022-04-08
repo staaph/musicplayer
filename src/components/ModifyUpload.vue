@@ -2,9 +2,11 @@
   <div
     class="flex flex-col border border-gray-200 p-4 rounded-lg md:w-1/2 min-w-fit"
   >
+    <!-- TITLE -->
     <h4 class="text-2xl flex justify-center font-bold text-white">Modify</h4>
+    <!-- Edit Component for each song-->
     <div class="flex flex-row w-full gap-2 mt-2">
-      <p class="text-white">Song Name</p>
+      <p class="text-lg text-gray-300">Song Name</p>
 
       <button class="text-sm text-end rounded px-2 py-1 text-white bg-blue-600">
         <font-awesome-icon icon="pencil" />
@@ -15,8 +17,8 @@
     </div>
     <div>
       <form>
-        <div class="mb-2">
-          <label class="mb-2 text-white">Song Title</label>
+        <div class="my-2">
+          <label class="mb-2 text-white text-sm">Song Title</label>
           <input
             type="text"
             class="w-full py-1.5 px-3 bg-gray-200 text-gray-800 border border-gray-300 outline-none rounded-md"
@@ -24,7 +26,7 @@
           />
         </div>
         <div class="">
-          <label class="mb-2 text-white">Artist</label>
+          <label class="mb-2 text-white text-sm">Artist</label>
           <input
             type="text"
             class="w-full py-1.5 px-3 bg-gray-200 text-gray-800 border border-gray-300 outline-none rounded-md"
