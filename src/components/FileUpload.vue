@@ -57,7 +57,7 @@ import {
 const is_dragover = ref(false);
 const uploads = ref([]);
 
-//upload method
+// upload function
 const upload = ($event) => {
   is_dragover.value = false;
   const files = $event.dataTransfer
@@ -65,13 +65,16 @@ const upload = ($event) => {
     : [...$event.target.files];
 
   files.forEach((file) => {
+    // client side file type check
     if (file.type !== 'audio/mpeg') {
       return;
     }
     const storageRef = fbref(storage);
+    //defines folderstructure in firestorage
     const songsRef = fbref(storageRef, `songs/${file.name}`);
+    // uploads the file in defined folder
     const task = uploadBytesResumable(songsRef, file);
-
+    // push uploaded file into array for the progress bar
     const uploadIndex =
       uploads.value.push({
         task,
@@ -80,7 +83,7 @@ const upload = ($event) => {
         variants: 'bg-blue-500',
         text_class: '',
       }) - 1;
-
+    // calculation for the progress bar
     task.on(
       'state_changed',
       (snapshot) => {
@@ -88,19 +91,22 @@ const upload = ($event) => {
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         uploads.value[uploadIndex].current_progress = progress;
       },
+      // progress bar color change on error
       (error) => {
         uploads.value[uploadIndex].variant = 'bg-red-400';
         uploads.value[uploadIndex].text_class = 'text-red-400';
       },
+      // defines data for firestore
       async () => {
         const song = {
           original_name: task.snapshot.ref.name,
           modified_name: task.snapshot.ref.name,
           artist: '',
         };
+        // adds data into firestore
         song.url = await getDownloadURL(task.snapshot.ref);
         await addDoc(songsCollection, song);
-
+        // progress bar on success
         uploads.value[uploadIndex].variant = 'bg-green-400';
         uploads.value[uploadIndex].text_class = 'text-green-400';
       }
@@ -109,7 +115,6 @@ const upload = ($event) => {
 };
 
 // cancel upload on page leave
-
 onBeforeUnmount(() => {
   uploads.value.forEach((upload) => {
     upload.task.cancel();

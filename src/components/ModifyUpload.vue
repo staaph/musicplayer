@@ -4,7 +4,9 @@
     class="flex flex-row w-full border p-2 rounded-lg gap-2 mt-2"
     v-show="!showForm"
   >
-    <p class="text-lg text-gray-300">{{ song.modified_name }}</p>
+    <p class="text-lg text-gray-300">
+      {{ song.artist }} - {{ song.modified_name }}
+    </p>
 
     <button
       class="text-sm text-end rounded px-2 py-1 text-white bg-blue-600"
@@ -18,7 +20,7 @@
   </div>
   <div v-show="showForm">
     <div
-      class="text-white text-center font-bold p-4 mb-4"
+      class="text-white text-center font-bold p-2 my-2 rounded-lg"
       v-if="show_alert"
       :class="alert_variant"
     >
@@ -26,7 +28,12 @@
     </div>
 
     <!-- Form -->
-    <vee-form @submit="edit" :validation-schema="schema" :initial-values="song">
+    <vee-form
+      @submit="edit"
+      :validation-schema="schema"
+      :initial-values="song"
+      class="border p-2 rounded-lg"
+    >
       <div class="my-2">
         <label class="mb-2 text-white text-sm">Song Title</label>
         <vee-field
@@ -75,8 +82,15 @@ import { ref } from 'vue';
 import { songsCollection, doc } from '@/firebase/config';
 import { updateDoc } from 'firebase/firestore';
 
+//vee-validate schema for validation
 const schema = { modified_name: 'required', artist: 'required' };
-const props = defineProps({ song: { type: Object, required: true } });
+
+//props passed to UploadManager.vue
+const props = defineProps({
+  song: { type: Object, required: true },
+  updateSong: { type: Function, required: true },
+  index: { type: Number, required: true },
+});
 
 //definitions
 const showForm = ref(false);
@@ -85,9 +99,10 @@ const show_alert = ref(false);
 const alert_variant = ref('bg-blue-500');
 const alert_message = ref('please wait. upadting song info...');
 
+//firebase ref for updating and deleting song properties
 const docRef = doc(songsCollection, props.song.docID);
 
-// submit modified song name & artist
+// submit modified song name & artist + progress popup
 const edit = async (values) => {
   in_submission.value = true;
   show_alert.value = true;
@@ -95,15 +110,17 @@ const edit = async (values) => {
   alert_message.value = 'please wait. upadting song info...';
 
   try {
+    // overwrites current values
     await updateDoc(docRef, values);
   } catch (error) {
     in_submission.value = false;
     alert_variant.value = 'bg-red-500';
     alert_message.value = 'something went wrong';
-    console.log(values);
-    console.log(error);
     return;
   }
+  // function from UploadManager.vue
+  props.updateSong(props.index, values);
+
   in_submission.value = false;
   alert_variant.value = 'bg-green-500';
   alert_message.value = 'success';

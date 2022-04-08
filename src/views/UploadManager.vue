@@ -24,7 +24,13 @@
         <h4 class="text-2xl flex justify-center font-bold text-white">
           Modify
         </h4>
-        <ModifyUpload v-for="song in songs" :key="song.docID" :song="song" />
+        <ModifyUpload
+          v-for="(song, i) in songs"
+          :key="song.docID"
+          :song="song"
+          :updateSong="updateSong"
+          :index="i"
+        />
       </div>
     </div>
   </div>
@@ -34,19 +40,23 @@
 import ModifyUpload from '@/components/ModifyUpload.vue';
 import FileUpload from '@/components/FileUpload.vue';
 import { onBeforeMount, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { songsCollection } from '../firebase/config';
 import { query, getDocs } from 'firebase/firestore';
 import useAuth from '../composables/useAuth.js';
-import { useRouter } from 'vue-router';
 
+// array gets all songdata from database to display in template (passed as props from ModifyUpload.vue)
 const songs = ref([]);
 
 //query firestore database to get songs
 const songsList = query(songsCollection);
 
+// beforeMount get the songs and push into array
 onBeforeMount(async () => {
+  // gets all songs from firestore
   const snapshot = await getDocs(songsList);
   snapshot.forEach((document) => {
+    // stores firebase data in variable and pushed into songs array
     const song = {
       ...document.data(),
       docID: document.id,
@@ -54,6 +64,12 @@ onBeforeMount(async () => {
     songs.value.push(song);
   });
 });
+
+// updates / displays modified song properties
+const updateSong = (i, values) => {
+  songs.value[i].modified_name = values.modified_name;
+  songs.value[i].artist = values.artist;
+};
 
 //logout user and redirect to /
 const { logout } = useAuth();
