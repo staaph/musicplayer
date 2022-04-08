@@ -15,7 +15,7 @@
     <hr class="my-3" />
     <div class="flex flex-col md:flex-row justify-center p-12 gap-20">
       <!-- File upload Dropbox-->
-      <FileUpload />
+      <FileUpload :addSong="addSong" />
       <!-- Modify songs component -->
       <div
         class="flex flex-col border border-gray-200 p-4 rounded-lg md:w-1/2 min-w-fit"
@@ -30,6 +30,8 @@
           :song="song"
           :updateSong="updateSong"
           :index="i"
+          :removeSong="removeSong"
+          :updateUnsavedFlag="updateUnsavedFlag"
         />
       </div>
     </div>
@@ -40,7 +42,7 @@
 import ModifyUpload from '@/components/ModifyUpload.vue';
 import FileUpload from '@/components/FileUpload.vue';
 import { onBeforeMount, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, onBeforeRouteLeave } from 'vue-router';
 import { songsCollection } from '../firebase/config';
 import { query, getDocs } from 'firebase/firestore';
 import useAuth from '../composables/useAuth.js';
@@ -55,14 +57,7 @@ const songsList = query(songsCollection);
 onBeforeMount(async () => {
   // gets all songs from firestore
   const snapshot = await getDocs(songsList);
-  snapshot.forEach((document) => {
-    // stores firebase data in variable and pushed into songs array
-    const song = {
-      ...document.data(),
-      docID: document.id,
-    };
-    songs.value.push(song);
-  });
+  snapshot.forEach(addSong);
 });
 
 // updates / displays modified song properties
@@ -70,6 +65,38 @@ const updateSong = (i, values) => {
   songs.value[i].modified_name = values.modified_name;
   songs.value[i].artist = values.artist;
 };
+
+const addSong = (document) => {
+  // stores firebase data in variable and pushes into songs array
+  const song = {
+    ...document.data(),
+    docID: document.id,
+  };
+  songs.value.push(song);
+};
+
+// deletes song - props function for ModifyUplaod
+const removeSong = (i) => {
+  songs.value.splice(i, 1);
+};
+
+// stops from navigating when filling out form
+const unsavedFlag = ref(false);
+// ref gets toggled while input is set in ModifyUpload.vue
+const updateUnsavedFlag = (value) => {
+  unsavedFlag.value = value;
+};
+// stops from navigating away while having unsaved changes
+onBeforeRouteLeave((to, from, next) => {
+  if (!unsavedFlag.value) {
+    next();
+  } else {
+    const leave = confirm(
+      'You have unsaved changes. Are you sure you want to leave?'
+    );
+    next(leave);
+  }
+});
 
 //logout user and redirect to /
 const { logout } = useAuth();

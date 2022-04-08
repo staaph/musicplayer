@@ -46,7 +46,7 @@
 
 <script setup>
 import { ref, onBeforeUnmount } from 'vue';
-import { storage, songsCollection, addDoc } from '../firebase/config';
+import { storage, songsCollection, addDoc, getDoc } from '../firebase/config';
 import {
   ref as fbref,
   uploadBytesResumable,
@@ -56,6 +56,11 @@ import {
 //definitions
 const is_dragover = ref(false);
 const uploads = ref([]);
+
+// props passed to UploadManager.vue
+const props = defineProps({
+  addSong: { type: Function, required: true },
+});
 
 // upload function
 const upload = ($event) => {
@@ -105,7 +110,12 @@ const upload = ($event) => {
         };
         // adds data into firestore
         song.url = await getDownloadURL(task.snapshot.ref);
-        await addDoc(songsCollection, song);
+        // if upload is successful => add data to firestore
+        const songRef = await addDoc(songsCollection, song);
+        // calling firestore again to get the new song
+        const songSnapshot = await getDoc(songRef);
+        // adds song new song to the modify component - passed to UploadManager, which holds the song array
+        props.addSong(songSnapshot);
         // progress bar on success
         uploads.value[uploadIndex].variant = 'bg-green-400';
         uploads.value[uploadIndex].text_class = 'text-green-400';

@@ -14,7 +14,10 @@
     >
       <font-awesome-icon icon="pencil" />
     </button>
-    <button class="flex px-2.5 py-2 text-sm rounded text-white bg-red-600">
+    <button
+      class="flex px-2.5 py-2 text-sm rounded text-white bg-red-600"
+      @click.prevent="deleteSong"
+    >
       <font-awesome-icon icon="times" />
     </button>
   </div>
@@ -41,6 +44,7 @@
           type="text"
           class="w-full py-1.5 px-3 bg-gray-200 text-gray-800 border border-gray-300 outline-none rounded-md"
           placeholder="Enter Song Title"
+          @input="updateUnsavedFlag(true)"
         />
         <ErrorMessage class="text-red-600" name="modified_name" />
       </div>
@@ -51,7 +55,7 @@
           type="text"
           class="w-full py-1.5 px-3 bg-gray-200 text-gray-800 border border-gray-300 outline-none rounded-md"
           placeholder="Enter Artist"
-          required
+          @input="updateUnsavedFlag(true)"
         />
         <ErrorMessage class="text-red-600" name="artist" />
       </div>
@@ -79,8 +83,9 @@
 
 <script setup>
 import { ref } from 'vue';
-import { songsCollection, doc } from '@/firebase/config';
-import { updateDoc } from 'firebase/firestore';
+import { songsCollection, doc, storage } from '@/firebase/config';
+import { updateDoc, deleteDoc } from 'firebase/firestore';
+import { ref as fbRef, deleteObject } from 'firebase/storage';
 
 //vee-validate schema for validation
 const schema = { modified_name: 'required', artist: 'required' };
@@ -90,6 +95,8 @@ const props = defineProps({
   song: { type: Object, required: true },
   updateSong: { type: Function, required: true },
   index: { type: Number, required: true },
+  removeSong: { type: Function, required: true },
+  updateUnsavedFlag: { type: Function },
 });
 
 //definitions
@@ -118,11 +125,23 @@ const edit = async (values) => {
     alert_message.value = 'something went wrong';
     return;
   }
-  // function from UploadManager.vue
+  // function from UploadManager.vue - updates displayed songs list
   props.updateSong(props.index, values);
+  props.updateUnsavedFlag(false);
 
   in_submission.value = false;
   alert_variant.value = 'bg-green-500';
   alert_message.value = 'success';
+};
+
+//delete song from database and mp3 from storage
+const deleteSong = async () => {
+  const storageRef = fbRef(storage, `songs/${props.song.original_name}`);
+  // delete song in Firebase Storage
+  await deleteObject(storageRef);
+  // delete data in Firestore
+  await deleteDoc(docRef);
+  // remove song from array which lives in the parent component
+  props.removeSong(props.index);
 };
 </script>
