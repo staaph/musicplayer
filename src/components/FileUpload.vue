@@ -45,8 +45,6 @@
 </template>
 
 <script setup>
-import useAuth from '../composables/useAuth.js';
-import { useRouter } from 'vue-router';
 import { ref, onBeforeUnmount } from 'vue';
 import { storage, songsCollection, addDoc } from '../firebase/config';
 import {
@@ -56,8 +54,7 @@ import {
 } from 'firebase/storage';
 
 //definitions
-const { logout } = useAuth();
-const router = useRouter();
+
 const is_dragover = ref(false);
 const uploads = ref([]);
 
@@ -119,12 +116,6 @@ onBeforeUnmount(() => {
     upload.task.cancel();
   });
 });
-
-//logout user and redirect to /
-const handleClick = async () => {
-  await logout();
-  router.push('/');
-};
 </script>
 
 <style>

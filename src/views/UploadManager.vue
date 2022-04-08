@@ -26,6 +26,8 @@ import FileUpload from '@/components/FileUpload.vue';
 import { onBeforeMount, ref } from 'vue';
 import { songsCollection } from '../firebase/config';
 import { query, getDocs } from 'firebase/firestore';
+import useAuth from '../composables/useAuth.js';
+import { useRouter } from 'vue-router';
 
 const songs = ref([]);
 
@@ -42,4 +44,12 @@ onBeforeMount(async () => {
     songs.value.push(song);
   });
 });
+
+const { logout } = useAuth();
+const router = useRouter();
+//logout user and redirect to /
+const handleClick = async () => {
+  await logout();
+  router.push('/');
+};
 </script>
