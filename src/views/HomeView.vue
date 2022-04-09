@@ -18,20 +18,18 @@
       <!-- Play Bar -->
       <!-- Play Bar -->
       <div
-        class="flex justify-between bg-gray-900 sm:w-82 h-16 rounded-2xl mt-2 mx-5 mb-6 px-5"
+        class="flex justify-between py-4 bg-gray-900 sm:w-82 h-16 rounded-2xl mt-2 mx-5 mb-6 px-5"
       >
         <!-- Play Button -->
-        <button type="button">
+        <button type="button" @click.prevent="toggleAudio">
           <font-awesome-icon
             icon="play"
             class="text-white text-xl sm:text-3xl"
-            @click.prevent="toggleAudio"
             v-if="!songPlaying"
           />
           <font-awesome-icon
             icon="pause"
             class="text-white text-xl sm:text-3xl"
-            @click.prevent="toggleAudio"
             v-if="songPlaying"
           />
         </button>
@@ -42,8 +40,8 @@
           00:00
         </div>
         <!-- current position / change - bar + song title & artist -->
-        <div class="flex flex-col px- items-center w-full">
-          <span class="pt-2 text-gray-400 text-sm pb-2" v-show="songPlaying"
+        <div class="flex flex-col px-2 justify-center items-center w-full">
+          <span class="text-gray-400 text-sm pb-2" v-show="songPlaying"
             >{{ currentSong.modified_name }} by {{ currentSong.artist }}</span
           >
           <div class="w-3/4 bg-gray-200 rounded-xl">
