@@ -91,7 +91,6 @@ const sound = ref();
 
 const newSong = async (value) => {
   currentSong.value = value;
-  console.log(currentSong.value);
   if (!songPlaying.value) {
     sound.value = new Howl({
       src: value.url,
@@ -99,7 +98,6 @@ const newSong = async (value) => {
     });
     await sound.value.play();
     songPlaying.value = true;
-    console.log(songPlaying.value);
   } else {
     sound.value.stop();
     sound.value = new Howl({
@@ -107,7 +105,6 @@ const newSong = async (value) => {
       html5: true,
     });
     await sound.value.play();
-    console.log(songPlaying.value);
   }
 };
 
@@ -119,11 +116,9 @@ const toggleAudio = () => {
   if (sound.value.playing()) {
     sound.value.pause();
     songPlaying.value = false;
-    console.log(songPlaying.value);
   } else {
     sound.value.play();
     songPlaying.value = true;
-    console.log(songPlaying.value);
   }
 };
 </script>
