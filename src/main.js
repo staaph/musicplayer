@@ -15,13 +15,14 @@ import {
   faMusic,
   faTimes,
   faPencilAlt,
+  faPause,
 } from '@fortawesome/free-solid-svg-icons';
 
 /* import font awesome icon component */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 /* add icons to the library */
-library.add(faPlay, faCircle, faMusic, faTimes, faPencilAlt);
+library.add(faPlay, faCircle, faMusic, faTimes, faPencilAlt, faPause);
 
 let app;
 
