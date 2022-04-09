@@ -18,7 +18,9 @@
       >
         {{ song.artist }}
       </p>
-      <p class="text-white">{{ song.modified_name }}</p>
+      <p class="text-white">
+        {{ song.modified_name }}
+      </p>
     </div>
     <div class="w-1/6 flex items-center">
       <p class="m-3 text-white text-sm">00:00</p>

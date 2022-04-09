@@ -33,24 +33,28 @@
             v-if="songPlaying"
           />
         </button>
-        <!-- current position - number -->
+        <!-- current song position -->
         <div
           class="flex items-center pl-2 sm:pl-4 text-white text-xs sm:text-sm"
         >
-          00:00
+          {{ seek }}
         </div>
         <!-- current position / change - bar + song title & artist -->
         <div class="flex flex-col px-2 justify-center items-center w-full">
-          <span class="text-gray-400 text-sm pb-2" v-show="songPlaying"
-            >{{ currentSong.modified_name }} by {{ currentSong.artist }}</span
+          <span
+            class="text-gray-400 text-sm pb-2 text-center"
+            v-show="currentSong"
+            >{{ currentSong.modified_name
+            }}<span v-if="currentSong.artist">&nbsp;by&nbsp;</span
+            >{{ currentSong.artist }}</span
           >
           <div class="w-3/4 bg-gray-200 rounded-xl">
             <div class="bg-blue-700 h-1 rounded-xl" style="width: 45%"></div>
           </div>
         </div>
-        <!-- song length -->
+        <!-- song duration -->
         <div class="flex items-center text-white text-xs sm:text-sm sm:pl-4">
-          3:21
+          {{ duration }}
         </div>
       </div>
     </div>
@@ -59,7 +63,7 @@
 
 <script setup>
 import MusicPlayer from '@/components/MusicPlayer.vue';
-import { onBeforeMount, reactive, ref } from 'vue';
+import { onBeforeMount, reactive, ref, watchEffect } from 'vue';
 import { songsCollection } from '@/firebase/config';
 import { getDocs } from 'firebase/firestore';
 import { Howl } from 'howler';
@@ -82,20 +86,29 @@ const getSongs = async () => {
   });
 };
 
-// gets clicked song url and plays with howler
+// PLAY MUSIC FUNCTION
+// gets the current Song from the component
 const currentSong = ref({});
+// is song playing ? for play/pause button
 const songPlaying = ref(false);
+// gets the sound data including url for howler
 const sound = ref();
+// gets the duration of the song
+const duration = ref('00:00');
+// gets current position in song
+const seek = ref('00:00');
 
+// gets clicked song url and plays with howler
 const newSong = async (value) => {
   currentSong.value = value;
+
   if (!songPlaying.value) {
     sound.value = new Howl({
       src: value.url,
       html5: true,
     });
-    await sound.value.play();
     songPlaying.value = true;
+    await sound.value.play();
   } else {
     sound.value.stop();
     sound.value = new Howl({
@@ -106,7 +119,18 @@ const newSong = async (value) => {
   }
 };
 
-// PlayBar play pause button
+watchEffect(() => {
+  if (sound.value) {
+    sound.value.on('play', () => {
+      requestAnimationFrame(() => {
+        seek.value = sound.value.seek();
+        duration.value = sound.value.duration();
+      });
+    });
+  }
+});
+
+// PlayBar play pause button & pause, play song
 const toggleAudio = () => {
   if (!sound.value.playing) {
     return;
