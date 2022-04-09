@@ -15,6 +15,7 @@
     "@fortawesome/vue-fontawesome": "^3.0.0-5",
     "@vee-validate/rules": "^4.5.10",
     "firebase": "^9.6.10",
+    "howler": "^2.2.3",
     "pinia": "^2.0.13",
     "vee-validate": "^4.5.10",
     "vue": "^3.2.31",
