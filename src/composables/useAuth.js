@@ -31,6 +31,7 @@ const useAuth = () => {
   //logout
   const logout = async () => {
     await signOut(auth);
+    isAuthenticated.value = false;
   };
 
   return { login, logout, errorMsg, isAuthenticated };

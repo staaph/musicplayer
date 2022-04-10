@@ -39,8 +39,6 @@ const signIn = async () => {
   await login(email.value, password.value);
   if (isAuthenticated.value) {
     router.push('/upload');
-  } else {
-    //TODO display error
   }
 };
 </script>
