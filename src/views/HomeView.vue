@@ -49,7 +49,10 @@
             >{{ currentSong.artist }}</span
           >
           <div class="w-3/4 bg-gray-200 rounded-xl">
-            <div class="bg-blue-700 h-1 rounded-xl" style="width: 45%"></div>
+            <div
+              class="bg-blue-700 h-1 rounded-xl"
+              :style="{ width: playerProgress }"
+            ></div>
           </div>
         </div>
         <!-- song duration -->
@@ -67,6 +70,7 @@ import { onBeforeMount, reactive, ref } from 'vue';
 import { songsCollection } from '@/firebase/config';
 import { getDocs } from 'firebase/firestore';
 import { Howl } from 'howler';
+import { formatTime } from '../includes/formatTime';
 
 const songs = reactive([]);
 
@@ -87,16 +91,13 @@ const getSongs = async () => {
 };
 
 // PLAY MUSIC FUNCTION
-// gets the current Song from the component
 const currentSong = ref({});
-// is song playing ? for play/pause button
 const songPlaying = ref(false);
 // gets the sound data including url for howler
 const sound = ref();
-// gets the duration of the song
 const duration = ref('00:00');
-// gets current position in song
 const seek = ref('00:00');
+const playerProgress = ref('0%');
 
 // gets clicked song url and plays with howler
 const newSong = async (value) => {
@@ -126,8 +127,11 @@ const newSong = async (value) => {
 };
 
 const stepFunction = () => {
-  seek.value = sound.value.seek();
-  duration.value = sound.value.duration();
+  seek.value = formatTime(sound.value.seek());
+  duration.value = formatTime(sound.value.duration());
+  playerProgress.value = `${
+    (sound.value.seek() / sound.value.duration()) * 100
+  }%`;
 
   if (sound.value.playing()) {
     window.requestAnimationFrame(stepFunction.bind(this));
