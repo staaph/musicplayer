@@ -12,20 +12,12 @@ const useAuth = () => {
       isAuthenticated.value = true;
       errorMsg.value = ref();
     } catch (error) {
-      switch (error.code) {
-        case 'auth/invalid-email':
-          errorMsg.value = 'Invalid email';
-          break;
-        case 'auth/user-not-found':
-          errorMsg.value = 'No account with the provided email found';
-          break;
-        case 'auth/wrong-password':
-          errorMsg.value = 'Incorrect password';
-          break;
-        default:
-          errorMsg.value = 'Incorrect credentials';
-          break;
-      }
+      const errorMessageMap = {
+        'auth/invalid-email': 'Invalid email',
+        'auth/wrong-password': 'Incorrect password',
+        'auth/user-not-found': 'No account with the provided email found',
+      };
+      errorMsg.value = errorMessageMap[error.code] ?? 'Incorrect credentials';
     }
   };
   //logout
