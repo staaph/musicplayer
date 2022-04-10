@@ -119,16 +119,15 @@ const newSong = async (value) => {
   }
 };
 
-watchEffect(() => {
-  if (sound.value) {
-    sound.value.on('play', () => {
-      requestAnimationFrame(() => {
-        seek.value = sound.value.seek();
-        duration.value = sound.value.duration();
-      });
+// TODO: VALUE DOES NOT CHANGE
+if (sound.value) {
+  sound.value.on('play', () => {
+    requestAnimationFrame(() => {
+      seek.value = sound.value.seek();
+      duration.value = sound.value.duration();
     });
-  }
-});
+  });
+}
 
 // PlayBar play pause button & pause, play song
 const toggleAudio = () => {

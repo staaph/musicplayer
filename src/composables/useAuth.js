@@ -2,11 +2,9 @@ import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth } from '../firebase/config.js';
 import { ref } from 'vue';
 
-const errorMsg = ref();
-const isAuthenticated = ref(false);
-
 const useAuth = () => {
-  errorMsg.value = ref();
+  const errorMsg = ref();
+  const isAuthenticated = ref(false);
   //login
   const login = async (email, password) => {
     try {
