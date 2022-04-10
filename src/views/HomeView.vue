@@ -63,7 +63,7 @@
 
 <script setup>
 import MusicPlayer from '@/components/MusicPlayer.vue';
-import { onBeforeMount, reactive, ref, watchEffect } from 'vue';
+import { onBeforeMount, reactive, ref } from 'vue';
 import { songsCollection } from '@/firebase/config';
 import { getDocs } from 'firebase/firestore';
 import { Howl } from 'howler';
@@ -106,6 +106,9 @@ const newSong = async (value) => {
     sound.value = new Howl({
       src: value.url,
       html5: true,
+      onplay: function () {
+        requestAnimationFrame(stepFunction.bind(this));
+      },
     });
     songPlaying.value = true;
     await sound.value.play();
@@ -114,20 +117,22 @@ const newSong = async (value) => {
     sound.value = new Howl({
       src: value.url,
       html5: true,
+      onplay: function () {
+        requestAnimationFrame(stepFunction.bind(this));
+      },
     });
     await sound.value.play();
   }
 };
 
-// TODO: VALUE DOES NOT CHANGE
-if (sound.value) {
-  sound.value.on('play', () => {
-    requestAnimationFrame(() => {
-      seek.value = sound.value.seek();
-      duration.value = sound.value.duration();
-    });
-  });
-}
+const stepFunction = () => {
+  seek.value = sound.value.seek();
+  duration.value = sound.value.duration();
+
+  if (sound.value.playing()) {
+    window.requestAnimationFrame(stepFunction.bind(this));
+  }
+};
 
 // PlayBar play pause button & pause, play song
 const toggleAudio = () => {
