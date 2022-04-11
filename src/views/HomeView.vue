@@ -100,8 +100,8 @@ onBeforeMount(async () => {
 const currentSong = ref({});
 const songPlaying = ref(false);
 const sound = ref();
-const duration = ref('00:00');
-const seek = ref('00:00');
+const duration = ref('0:00');
+const seek = ref('0:00');
 const playerProgress = ref('0%');
 
 // gets clicked song url and plays with howler
