@@ -50,7 +50,7 @@
           >
           <div class="w-3/4 bg-gray-200 rounded-xl">
             <div
-              class="bg-blue-700 h-1 rounded-xl"
+              class="bg-blue-700 h-1 rounded-xl transition-all"
               :style="{ width: playerProgress }"
             ></div>
           </div>
@@ -74,10 +74,6 @@ import { formatTime } from '../includes/formatTime';
 
 const songs = reactive([]);
 
-onBeforeMount(async () => {
-  getSongs();
-});
-
 // get Docs from Firestore and push into array
 const getSongs = async () => {
   const snapshot = await getDocs(songsCollection);
@@ -90,10 +86,12 @@ const getSongs = async () => {
   });
 };
 
-// PLAY MUSIC FUNCTION
+onBeforeMount(async () => {
+  getSongs();
+});
+
 const currentSong = ref({});
 const songPlaying = ref(false);
-// gets the sound data including url for howler
 const sound = ref();
 const duration = ref('00:00');
 const seek = ref('00:00');
