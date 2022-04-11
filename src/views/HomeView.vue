@@ -18,7 +18,7 @@
       <!-- Play Bar -->
       <!-- Play Bar -->
       <div
-        class="flex justify-between py-4 bg-gray-900 sm:w-82 h-16 rounded-2xl mt-2 mx-5 mb-6 px-5"
+        class="flex justify-between py-4 bg-gray-900 sm:w-82 h-16 rounded-2xl mx-5 mb-6 px-5"
       >
         <!-- Play Button -->
         <button type="button" @click.prevent="toggleAudio">
@@ -41,7 +41,9 @@
         </div>
         <!-- current position / change - bar + song title & artist -->
         <div class="flex flex-col px-2 justify-center items-center w-full">
+          <span v-if="!sound" class="text-white">- Select a song -</span>
           <span
+            else
             class="text-gray-400 text-sm pb-2 text-center"
             v-show="currentSong"
             >{{ currentSong.modified_name
@@ -159,15 +161,17 @@ const updateSeek = (event) => {
 
 // PlayBar play pause button & pause, play song
 const toggleAudio = () => {
-  if (!sound.value.playing) {
-    return;
-  }
-  if (sound.value.playing()) {
-    sound.value.pause();
-    songPlaying.value = false;
-  } else {
-    sound.value.play();
-    songPlaying.value = true;
+  if (sound.value) {
+    if (!sound.value.playing) {
+      return;
+    }
+    if (sound.value.playing()) {
+      sound.value.pause();
+      songPlaying.value = false;
+    } else {
+      sound.value.play();
+      songPlaying.value = true;
+    }
   }
 };
 </script>
