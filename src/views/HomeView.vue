@@ -6,7 +6,7 @@
       class="flex flex-col bg-black lg:w-4/6 sm:w-5/6 w-full h-screen sm:my-12 sm:rounded-2xl"
     >
       <div
-        class="bg-gray-900 flex flex-col sm:w-82 m-5 h-800 sm:h-440 rounded-xl overflow-y-auto"
+        class="bg-gray-900 flex flex-col sm:w-82 m-5 h-full rounded-xl overflow-y-auto"
       >
         <MusicPlayer
           v-for="song in songs"
