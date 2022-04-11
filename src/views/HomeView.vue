@@ -3,7 +3,7 @@
     class="bg-gray-800 min-w-screen max-h-screen flex flex-col justify-center items-center"
   >
     <div
-      class="flex flex-col bg-black lg:w-4/6 sm:w-5/6 w-full h-screen sm:my-12 sm:rounded-2xl"
+      class="flex flex-col bg-black lg:w-4/6 sm:w-5/6 w-full h-screen my-12 sm:rounded-2xl"
     >
       <div
         class="bg-gray-900 flex flex-col sm:w-82 m-5 h-full rounded-xl overflow-y-auto"
@@ -21,7 +21,7 @@
         class="flex py-4 bg-gray-900 h-16 rounded-2xl mx-5 mb-6 px-4 items-center"
       >
         <!-- Play Button -->
-        <div class="w-24 flex flex-row items-center">
+        <div class="w-20 flex flex-row items-center">
           <button type="button" @click.prevent="toggleAudio">
             <font-awesome-icon
               icon="play"
@@ -42,7 +42,7 @@
         </div>
 
         <!-- current position / change - bar + song title & artist -->
-        <div class="flex flex-col items-center w-full mx-3">
+        <div class="flex flex-col items-center justify-center w-full mx-3">
           <span v-if="!sound" class="text-white">- Select a song -</span>
           <span
             else
@@ -53,7 +53,7 @@
             >{{ currentSong.artist }}</span
           >
           <div
-            class="w-3/4 bg-gray-200 rounded-xl cursor-pointer"
+            class="w-11/12 bg-gray-200 rounded-xl cursor-pointer"
             @click.prevent="updateSeek($event)"
           >
             <div
@@ -63,7 +63,9 @@
           </div>
         </div>
         <!-- song duration -->
-        <div class="flex items-center text-white text-xs sm:text-sm pr-2">
+        <div
+          class="flex items-center pl-2 sm:pl-4 text-white text-xs sm:text-sm"
+        >
           {{ duration }}
         </div>
       </div>
