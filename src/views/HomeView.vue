@@ -18,29 +18,31 @@
       <!-- Play Bar -->
       <!-- Play Bar -->
       <div
-        class="flex justify-between py-4 bg-gray-900 sm:w-82 h-16 rounded-2xl mx-5 mb-6 px-5"
+        class="flex py-4 bg-gray-900 h-16 rounded-2xl mx-5 mb-6 px-4 items-center"
       >
         <!-- Play Button -->
-        <button type="button" @click.prevent="toggleAudio">
-          <font-awesome-icon
-            icon="play"
-            class="text-white text-xl sm:text-3xl"
-            v-if="!songPlaying"
-          />
-          <font-awesome-icon
-            icon="pause"
-            class="text-white text-xl sm:text-3xl"
-            v-if="songPlaying"
-          />
-        </button>
-        <!-- current song position -->
-        <div
-          class="flex items-center pl-2 sm:pl-4 text-white text-xs sm:text-sm"
-        >
-          {{ seek }}
+        <div class="w-24 flex flex-row items-center">
+          <button type="button" @click.prevent="toggleAudio">
+            <font-awesome-icon
+              icon="play"
+              class="text-white text-xl sm:text-3xl"
+              v-if="!songPlaying"
+            />
+            <font-awesome-icon
+              icon="pause"
+              class="text-white text-xl sm:text-3xl"
+              v-if="songPlaying"
+            />
+          </button>
+
+          <!-- current song position -->
+          <div class="pl-2 sm:pl-4 text-white text-xs sm:text-sm">
+            {{ seek }}
+          </div>
         </div>
+
         <!-- current position / change - bar + song title & artist -->
-        <div class="flex flex-col px-2 justify-center items-center w-full">
+        <div class="flex flex-col items-center w-full mx-3">
           <span v-if="!sound" class="text-white">- Select a song -</span>
           <span
             else
@@ -61,7 +63,7 @@
           </div>
         </div>
         <!-- song duration -->
-        <div class="flex items-center text-white text-xs sm:text-sm sm:pl-4">
+        <div class="flex items-center text-white text-xs sm:text-sm pr-2">
           {{ duration }}
         </div>
       </div>
@@ -113,6 +115,9 @@ const newSong = async (value) => {
       onplay: function () {
         requestAnimationFrame(stepFunction.bind(this));
       },
+      onend: function () {
+        songPlaying.value = false;
+      },
     });
     songPlaying.value = true;
     await sound.value.play();
@@ -123,6 +128,9 @@ const newSong = async (value) => {
       html5: true,
       onplay: function () {
         requestAnimationFrame(stepFunction.bind(this));
+      },
+      onend: function () {
+        songPlaying.value = false;
       },
     });
     await sound.value.play();
