@@ -48,9 +48,12 @@
             }}<span v-if="currentSong.artist">&nbsp;by&nbsp;</span
             >{{ currentSong.artist }}</span
           >
-          <div class="w-3/4 bg-gray-200 rounded-xl">
+          <div
+            class="w-3/4 bg-gray-200 rounded-xl cursor-pointer"
+            @click.prevent="updateSeek($event)"
+          >
             <div
-              class="bg-blue-700 h-1 rounded-xl transition-all"
+              class="bg-blue-700 h-1 rounded-xl transition duration-50"
               :style="{ width: playerProgress }"
             ></div>
           </div>
@@ -133,6 +136,24 @@ const stepFunction = () => {
 
   if (sound.value.playing()) {
     window.requestAnimationFrame(stepFunction.bind(this));
+  }
+};
+
+const updateSeek = (event) => {
+  const { width, x } = event.currentTarget.getBoundingClientRect();
+  const clickX = event.clientX - x;
+  const per = clickX / width;
+  const seconds = sound.value.duration() * per;
+
+  if (sound.value) {
+    if (sound.value.playing()) {
+      sound.value.pause();
+      sound.value.seek(seconds);
+
+      sound.value.play();
+    } else {
+      sound.value.seek(seconds);
+    }
   }
 };
 
