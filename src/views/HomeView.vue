@@ -1,9 +1,9 @@
 <template>
   <div
-    class="bg-gray-800 min-w-screen max-h-screen flex flex-col justify-center items-center"
+    class="bg-gray-800 max-h-screen min-h-screen flex flex-col justify-center items-center"
   >
     <div
-      class="flex flex-col bg-black lg:w-4/6 sm:w-5/6 w-full h-screen my-12 sm:rounded-2xl"
+      class="flex flex-col bg-black lg:w-4/6 sm:w-5/6 w-full h-screen sm:max-h-[600px] my-12 sm:rounded-2xl"
     >
       <div
         class="bg-gray-900 flex flex-col sm:w-82 m-5 h-full rounded-xl overflow-y-auto"
