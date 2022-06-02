@@ -13,21 +13,21 @@
     "@fortawesome/free-regular-svg-icons": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/vue-fontawesome": "^3.0.0-5",
-    "@vee-validate/rules": "^4.5.10",
-    "firebase": "^9.6.10",
+    "@vee-validate/rules": "^4.5.11",
+    "firebase": "^9.8.2",
     "howler": "^2.2.3",
-    "pinia": "^2.0.13",
-    "vee-validate": "^4.5.10",
+    "pinia": "^2.0.14",
+    "vee-validate": "^4.5.11",
     "vue": "^3.2.31",
-    "vue-router": "^4.0.14"
+    "vue-router": "^4.0.15"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^2.3.1",
-    "autoprefixer": "^10.4.4",
-    "eslint": "^8.5.0",
-    "eslint-plugin-vue": "^8.2.0",
-    "postcss": "^8.4.12",
-    "tailwindcss": "^3.0.23",
-    "vite": "^2.9.1"
+    "@vitejs/plugin-vue": "^2.3.3",
+    "autoprefixer": "^10.4.7",
+    "eslint": "^8.16.0",
+    "eslint-plugin-vue": "^8.7.1",
+    "postcss": "^8.4.14",
+    "tailwindcss": "^3.0.24",
+    "vite": "^2.9.9"
   }
 }
